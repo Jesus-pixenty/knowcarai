@@ -823,6 +823,15 @@
   .streak-pill b{font-size:13.5px;}
 
   .rewards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+
+  .marketplace-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;max-height:60vh;overflow-y:auto;}
+  .listing-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;text-align:left;}
+  .listing-card img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--bg-soft);}
+  .listing-card .lc-body{padding:10px;}
+  .listing-card .lc-title{font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .listing-card .lc-price{font-size:13.5px;font-weight:800;color:var(--accent-2);margin-top:3px;}
+  .listing-card .lc-status{font-size:10px;color:var(--text-faint);margin-top:2px;}
+  .listing-cat-btn.active{background:var(--accent);color:#fff;}
   .reward-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;}
   .reward-icon{font-size:34px;line-height:1;}
   .reward-card .reward-label{font-size:13.5px;font-weight:700;color:var(--text);}
@@ -939,9 +948,10 @@
   .comments-list{max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:14px;}
   .comments-empty{text-align:center;padding:30px 10px;color:var(--text-faint);font-size:13.5px;}
   .comment-item{font-size:13.5px;line-height:1.5;color:#e6e6ea;display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;}
-  .comment-own-actions{display:inline-flex;gap:4px;margin-left:auto;flex-shrink:0;}
-  .comment-own-actions button{font-size:12px;color:var(--text-faint);padding:2px 4px;}
-  .comment-own-actions button:hover{color:var(--accent-2);}
+  .comment-own-actions{display:flex;gap:10px;width:100%;margin-top:2px;}
+  .comment-own-actions button{font-size:11.5px;font-weight:700;color:var(--accent-2);padding:2px 0;}
+  .comment-own-actions button:hover{text-decoration:underline;}
+  .comment-own-actions button:last-child{color:var(--danger);}
 
   .user-search-wrap{
     position:relative;max-width:520px;margin:0 auto 14px;
@@ -1143,7 +1153,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="plan-price">0€<span>/mes</span></div>
           <ul class="plan-list">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>15 consultas IA al día</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>3 escaneos de coche al día</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>5 escaneos de coche al día</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Acceso a la comunidad</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Mapa y eventos básicos</li>
           </ul>
@@ -1155,7 +1165,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="plan-price">2,99€<span>/mes</span></div>
           <ul class="plan-list">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>150 consultas IA al día</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>10 escaneos de coche al día</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>30 escaneos de coche al día</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Comparador avanzado</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Alertas de eventos cercanos</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Participa en concursos de Knowcar AI</li>
@@ -1303,6 +1313,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <button class="quick-card" onclick="switchView('ai')">
                 <div class="qicon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18M7 14l4-5 3 3 5-7"/></svg></div>
                 <span>Comparador</span>
+              </button>
+              <button class="quick-card" onclick="openMarketplace()">
+                <div class="qicon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2l1.5 5h9L18 2M4 7h16l-1.5 12a2 2 0 01-2 2H7.5a2 2 0 01-2-2L4 7zM9 11v4M15 11v4"/></svg></div>
+                <span>Mercadillo</span>
               </button>
             </div>
 
@@ -1895,6 +1909,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span>Valorar Knowcar AI</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
         </button>
+        <button class="settings-item" onclick="connectSellerAccount()">
+          <span>Activar cobros para vender en el Mercadillo</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
         <button class="settings-item danger" onclick="logout()">
           <span>Cerrar sesión</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -2070,6 +2088,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- Plans modal (accesible desde dentro de la app) -->
   <!-- Tienda de recompensas -->
+  <!-- Mercadillo: navegar -->
+  <div class="modal-overlay" id="marketplaceOverlay">
+    <div class="modal" style="max-width:640px;">
+      <div class="modal-head">
+        <h3>Mercadillo del motor</h3>
+        <button class="modal-close" onclick="closeMarketplace()">✕</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="btn btn-secondary btn-sm" id="filterAll" onclick="filterMarketplace('todo')">Todo</button>
+        <button class="btn btn-secondary btn-sm" id="filterPieza" onclick="filterMarketplace('pieza')">Piezas</button>
+        <button class="btn btn-secondary btn-sm" id="filterCoche" onclick="filterMarketplace('coche_completo')">Coches</button>
+        <button class="btn btn-primary btn-sm" style="margin-left:auto;" onclick="openCreateListing()">+ Publicar</button>
+      </div>
+      <div class="marketplace-grid" id="marketplaceGrid"></div>
+    </div>
+  </div>
+
+  <!-- Mercadillo: publicar artículo -->
+  <div class="modal-overlay" id="createListingOverlay">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>Publicar artículo</h3>
+        <button class="modal-close" onclick="closeCreateListing()">✕</button>
+      </div>
+      <div class="field-label">Tipo</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="btn btn-secondary btn-sm listing-cat-btn active" data-cat="pieza" onclick="selectListingCategory('pieza')">Pieza/accesorio</button>
+        <button class="btn btn-secondary btn-sm listing-cat-btn" data-cat="coche_completo" onclick="selectListingCategory('coche_completo')">Coche completo</button>
+      </div>
+      <div class="field-label">Foto</div>
+      <input type="file" accept="image/*" id="listingImageInput" style="margin-bottom:14px;">
+      <div class="field-label">Título</div>
+      <input class="field-input" id="listingTitle" placeholder="Ej. Llantas 18'' BBS, Ford Focus 2018..." style="margin-bottom:14px;">
+      <div class="field-label">Descripción</div>
+      <textarea class="field-textarea" id="listingDescription" placeholder="Estado, detalles, motivo de venta..." style="margin-bottom:14px;"></textarea>
+      <div class="field-label">Precio (€)</div>
+      <input type="number" class="field-input" id="listingPrice" placeholder="0" style="margin-bottom:6px;">
+      <p style="font-size:11.5px;color:var(--text-faint);margin-bottom:14px;">Se descuenta automáticamente un 1% de comisión al vender.</p>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-block" onclick="submitListing()">Publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mercadillo: detalle de artículo -->
+  <div class="modal-overlay" id="listingDetailOverlay">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="listingDetailTitle">Artículo</h3>
+        <button class="modal-close" onclick="closeListingDetail()">✕</button>
+      </div>
+      <img id="listingDetailImage" src="" alt="" style="width:100%;border-radius:14px;margin-bottom:14px;display:none;">
+      <p id="listingDetailDescription" style="font-size:13.5px;color:var(--text-dim);margin-bottom:10px;"></p>
+      <div style="font-size:22px;font-weight:800;color:var(--accent-2);margin-bottom:4px;" id="listingDetailPrice"></div>
+      <div style="font-size:12px;color:var(--text-faint);margin-bottom:16px;" id="listingDetailSeller"></div>
+      <button class="btn btn-primary btn-block" id="listingBuyBtn" onclick="buyListing()">Comprar</button>
+      <button class="btn btn-secondary btn-block" id="listingDeleteBtn" style="display:none;margin-top:8px;" onclick="deleteListing()">Eliminar publicación</button>
+    </div>
+  </div>
+
   <!-- Lista de seguidores/siguiendo -->
   <div class="modal-overlay" id="followListOverlay">
     <div class="modal">
@@ -2131,7 +2209,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="plan-price">0€<span>/mes</span></div>
           <ul class="plan-list">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>15 consultas IA al día</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>3 escaneos de coche al día</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>5 escaneos de coche al día</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Acceso a la comunidad</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Mapa y eventos básicos</li>
           </ul>
@@ -2142,7 +2220,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="plan-price">2,99€<span>/mes</span></div>
           <ul class="plan-list">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>150 consultas IA al día</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>10 escaneos de coche al día</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>30 escaneos de coche al día</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Comparador avanzado</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Alertas de eventos cercanos</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Participa en concursos de Knowcar AI</li>
@@ -2950,6 +3028,197 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   // ---------- Lista de seguidores / siguiendo ----------
+  // ---------- Mercadillo ----------
+  let marketplaceListings = [];
+  let marketplaceFilter = 'todo';
+  let selectedListingCategory = 'pieza';
+  let currentListingDetail = null;
+  let listingImageDataUrl = null;
+
+  async function openMarketplace(){
+    if(!backendReady){ showToast('Necesitas el backend configurado', { check:false }); return; }
+    document.getElementById('marketplaceOverlay').classList.add('show');
+    await loadMarketplaceListings();
+  }
+  function closeMarketplace(){ document.getElementById('marketplaceOverlay').classList.remove('show'); }
+
+  async function loadMarketplaceListings(){
+    const { data, error } = await sb.from('marketplace_listings')
+      .select('*, profiles(handle)')
+      .eq('status', 'disponible')
+      .order('created_at', { ascending:false });
+    if(error){
+      document.getElementById('marketplaceGrid').innerHTML = '<div class="comments-empty">No se pudo cargar el mercadillo.</div>';
+      return;
+    }
+    marketplaceListings = data || [];
+    renderMarketplaceGrid();
+  }
+
+  function filterMarketplace(cat){
+    marketplaceFilter = cat;
+    document.querySelectorAll('#filterAll, #filterPieza, #filterCoche').forEach(b => b.classList.remove('btn-primary'));
+    document.querySelectorAll('#filterAll, #filterPieza, #filterCoche').forEach(b => b.classList.add('btn-secondary'));
+    const activeBtn = cat === 'todo' ? 'filterAll' : cat === 'pieza' ? 'filterPieza' : 'filterCoche';
+    document.getElementById(activeBtn).classList.remove('btn-secondary');
+    document.getElementById(activeBtn).classList.add('btn-primary');
+    renderMarketplaceGrid();
+  }
+
+  function renderMarketplaceGrid(){
+    const grid = document.getElementById('marketplaceGrid');
+    const items = marketplaceFilter === 'todo' ? marketplaceListings : marketplaceListings.filter(l => l.category === marketplaceFilter);
+    if(items.length === 0){
+      grid.innerHTML = '<div class="comments-empty">Todavía no hay nada publicado aquí.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(l => `
+      <button class="listing-card" onclick="openListingDetail(${l.id})">
+        ${l.image_data ? `<img src="${escapeHtml(l.image_data)}" alt="">` : `<div style="aspect-ratio:1;background:var(--bg-soft);"></div>`}
+        <div class="lc-body">
+          <div class="lc-title">${escapeHtml(l.title)}</div>
+          <div class="lc-price">${(l.price_cents/100).toLocaleString('es-ES')} €</div>
+          <div class="lc-status">${escapeHtml(l.category === 'pieza' ? 'Pieza' : 'Coche completo')} · @${escapeHtml((l.profiles && l.profiles.handle) || '?')}</div>
+        </div>
+      </button>
+    `).join('');
+  }
+
+  function openCreateListing(){
+    if(!currentSession){ showToast('Necesitas iniciar sesión', { check:false }); return; }
+    document.getElementById('listingTitle').value = '';
+    document.getElementById('listingDescription').value = '';
+    document.getElementById('listingPrice').value = '';
+    document.getElementById('listingImageInput').value = '';
+    listingImageDataUrl = null;
+    selectListingCategory('pieza');
+    closeMarketplace();
+    document.getElementById('createListingOverlay').classList.add('show');
+  }
+  function closeCreateListing(){
+    document.getElementById('createListingOverlay').classList.remove('show');
+    openMarketplace();
+  }
+  function selectListingCategory(cat){
+    selectedListingCategory = cat;
+    document.querySelectorAll('.listing-cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  }
+
+  async function submitListing(){
+    const title = document.getElementById('listingTitle').value.trim();
+    const description = document.getElementById('listingDescription').value.trim();
+    const priceEuros = parseFloat(document.getElementById('listingPrice').value);
+    const fileInput = document.getElementById('listingImageInput');
+
+    if(!title || isNaN(priceEuros) || priceEuros <= 0){
+      showToast('Rellena al menos el título y un precio válido', { check:false });
+      return;
+    }
+
+    if(fileInput.files && fileInput.files[0]){
+      const reader = new FileReader();
+      const dataUrl = await new Promise((resolve) => {
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(fileInput.files[0]);
+      });
+      listingImageDataUrl = await resizeImageDataUrl(dataUrl, 800);
+    }
+
+    const { error } = await sb.from('marketplace_listings').insert({
+      seller_id: currentSession.user.id,
+      category: selectedListingCategory,
+      title,
+      description: description || null,
+      price_cents: Math.round(priceEuros * 100),
+      image_data: listingImageDataUrl
+    });
+    if(error){
+      showToast('No se pudo publicar: ' + error.message, { check:false, duration:4000 });
+      return;
+    }
+    showToast('¡Publicado!');
+    closeCreateListing();
+  }
+
+  async function openListingDetail(listingId){
+    const listing = marketplaceListings.find(l => l.id === listingId);
+    if(!listing) return;
+    currentListingDetail = listing;
+    document.getElementById('listingDetailTitle').textContent = listing.title;
+    const img = document.getElementById('listingDetailImage');
+    if(listing.image_data){ img.src = listing.image_data; img.style.display = 'block'; }
+    else { img.style.display = 'none'; }
+    document.getElementById('listingDetailDescription').textContent = listing.description || 'Sin descripción.';
+    document.getElementById('listingDetailPrice').textContent = (listing.price_cents/100).toLocaleString('es-ES') + ' €';
+    document.getElementById('listingDetailSeller').textContent = 'Vendedor: @' + ((listing.profiles && listing.profiles.handle) || '?');
+
+    const isOwn = currentSession && listing.seller_id === currentSession.user.id;
+    document.getElementById('listingBuyBtn').style.display = isOwn ? 'none' : 'block';
+    document.getElementById('listingDeleteBtn').style.display = isOwn ? 'block' : 'none';
+
+    closeMarketplace();
+    document.getElementById('listingDetailOverlay').classList.add('show');
+  }
+  function closeListingDetail(){
+    document.getElementById('listingDetailOverlay').classList.remove('show');
+    openMarketplace();
+  }
+
+  async function deleteListing(){
+    if(!currentListingDetail || !confirm('¿Eliminar esta publicación?')) return;
+    await sb.from('marketplace_listings').update({ status: 'eliminado' }).eq('id', currentListingDetail.id);
+    closeListingDetail();
+  }
+
+  async function buyListing(){
+    if(!currentSession){ showToast('Necesitas iniciar sesión', { check:false }); return; }
+    if(!currentListingDetail) return;
+    try{
+      const res = await fetch(SUPABASE_URL + '/functions/v1/create-marketplace-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + currentSession.access_token,
+          'apikey': SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({ listingId: currentListingDetail.id })
+      });
+      const data = await res.json().catch(() => null);
+      if(!res.ok || !data || !data.url){
+        showToast((data && data.error) || 'No se pudo iniciar el pago', { check:false, duration:4500 });
+        return;
+      }
+      window.location.href = data.url;
+    } catch(err){
+      showToast('Error de conexión al comprar', { check:false });
+    }
+  }
+
+  // Un vendedor tiene que activar los cobros una vez, antes de poder vender
+  // (esto le lleva a Stripe para verificar su identidad y cuenta bancaria).
+  async function connectSellerAccount(){
+    if(!currentSession){ showToast('Necesitas iniciar sesión', { check:false }); return; }
+    try{
+      const res = await fetch(SUPABASE_URL + '/functions/v1/connect-seller-account', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + currentSession.access_token,
+          'apikey': SUPABASE_ANON_KEY
+        }
+      });
+      const data = await res.json().catch(() => null);
+      if(!res.ok || !data || !data.url){
+        showToast((data && data.error) || 'No se pudo iniciar la activación', { check:false, duration:4500 });
+        return;
+      }
+      window.location.href = data.url;
+    } catch(err){
+      showToast('Error de conexión', { check:false });
+    }
+  }
+
+
   async function openFollowList(userId, kind){
     if(!userId || !backendReady) return;
     document.getElementById('followListTitle').textContent = kind === 'followers' ? 'Seguidores' : 'Siguiendo';
@@ -4002,16 +4271,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
     const myId = currentSession && currentSession.user ? currentSession.user.id : null;
-    list.innerHTML = comments.map(c => `
+    const ONE_HOUR = 60 * 60 * 1000;
+    list.innerHTML = comments.map(c => {
+      // Comparación como texto, por si acaso, para que un tipo de dato
+      // distinto (string vs uuid) nunca haga que el botón desaparezca.
+      const isOwn = !!(myId && c.user_id && String(c.user_id) === String(myId));
+      const canEdit = isOwn && (Date.now() - new Date(c.created_at).getTime()) < ONE_HOUR;
+      return `
       <div class="comment-item" data-comment-id="${c.id}">
         <b>${escapeHtml((c.profiles && c.profiles.handle) || 'usuario')}</b>
         <span class="comment-text">${escapeHtml(c.content)}</span>
-        ${myId && c.user_id === myId ? `
-          <span class="comment-own-actions">
-            <button onclick="startEditComment(${c.id})" aria-label="Editar">✎</button>
-            <button onclick="deleteComment(${c.id})" aria-label="Borrar">🗑</button>
-          </span>` : ''}
-      </div>`).join('');
+        ${isOwn ? `
+          <div class="comment-own-actions">
+            ${canEdit ? `<button onclick="startEditComment(${c.id})">Editar</button>` : ''}
+            <button onclick="deleteComment(${c.id})">Eliminar</button>
+          </div>` : ''}
+      </div>`;
+    }).join('');
     list.scrollTop = list.scrollHeight;
   }
 
@@ -4025,7 +4301,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     input.focus();
     input.addEventListener('keydown', (e) => { if(e.key === 'Enter') saveEditComment(commentId); });
     const actions = item.querySelector('.comment-own-actions');
-    if(actions) actions.innerHTML = `<button onclick="saveEditComment(${commentId})" aria-label="Guardar">✓</button>`;
+    if(actions) actions.innerHTML = `<button onclick="saveEditComment(${commentId})">Guardar</button>`;
   }
 
   async function saveEditComment(commentId){
@@ -4034,7 +4310,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const newText = input.value.trim();
     if(!newText) return;
     const { error } = await sb.from('comments').update({ content: newText }).eq('id', commentId);
-    if(error){ showToast('No se pudo guardar el cambio', { check:false }); return; }
+    if(error){ showToast('No se pudo guardar el cambio (¿ya pasó más de 1 hora?)', { check:false, duration:4000 }); return; }
     openComments(currentCommentsPostId);
   }
 
@@ -5365,8 +5641,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // Puntuación de precio (0=mal precio, 100=buen precio), en escala
     // continua — así "se pasa un poco del rango" no cae directo a rojo,
     // se mueve la aguja gradualmente, no en 3 saltos bruscos.
-    const lowBound = min * 0.9;
-    const highBound = max * 1.2;
+    const lowBound = min * 0.97;
+    const highBound = max * 1.08;
     let priceScore = 100 - ((price - lowBound) / (highBound - lowBound)) * 100;
     priceScore = Math.max(0, Math.min(100, priceScore));
 
@@ -5381,7 +5657,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(!isNaN(km) && km >= 0 && lastScanResult.km_anuales_tipicos && lastScanResult.anio_referencia){
       const edad = Math.max(1, new Date().getFullYear() - lastScanResult.anio_referencia);
       const kmEsperado = edad * lastScanResult.km_anuales_tipicos;
-      const kmLow = kmEsperado * 0.7, kmHigh = kmEsperado * 1.5;
+      const kmLow = kmEsperado * 0.85, kmHigh = kmEsperado * 1.15;
       kmScore = 100 - ((km - kmLow) / (kmHigh - kmLow)) * 100;
       kmScore = Math.max(0, Math.min(100, kmScore));
       const porKm = (price / km);
