@@ -3335,11 +3335,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // quede con el contexto guardado desde el principio, sin que el comprador
   // tenga que escribirlo a mano.
   async function sendListingSummaryIfFirstMessage(listing){
-    const { count } = await sb.from('marketplace_messages')
+    const { count, error: countError } = await sb.from('marketplace_messages')
       .select('id', { count:'exact', head:true })
       .eq('listing_id', listing.id)
       .eq('sender_id', currentSession.user.id)
       .eq('recipient_id', listing.seller_id);
+    if(countError){
+      console.error('[Knowcar AI] Error comprobando mensajes previos:', countError.message);
+      showToast('No se pudo enviar el resumen: ' + countError.message, { check:false, duration:4500 });
+      return;
+    }
     if(count && count > 0) return; // ya se mandó antes, no repetir
 
     const parts = [
@@ -3350,13 +3355,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     ];
     if(listing.km != null) parts.push(listing.km.toLocaleString('es-ES') + ' km');
 
-    await sb.from('marketplace_messages').insert({
+    const { error: insertError } = await sb.from('marketplace_messages').insert({
       listing_id: listing.id,
       sender_id: currentSession.user.id,
       recipient_id: listing.seller_id,
       content: parts.join(' · '),
       image_data: listing.image_data || null
     });
+    if(insertError){
+      console.error('[Knowcar AI] Error enviando el resumen del anuncio:', insertError.message);
+      showToast('No se pudo enviar el resumen: ' + insertError.message, { check:false, duration:4500 });
+      return;
+    }
     loadListingChatMessages();
   }
 
