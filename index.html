@@ -1065,11 +1065,11 @@
   body.native-app .modal-overlay{background:rgba(5,5,6,0.9);}
   body.native-app .topbar{background:rgba(9,9,9,0.94);}
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="vendor/leaflet.css" />
+<script src="vendor/leaflet.js"></script>
+<link rel="stylesheet" href="vendor/leaflet-routing-machine.css" />
+<script src="vendor/leaflet-routing-machine.js"></script>
+<script src="vendor/supabase.js"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3995601636877373" crossorigin="anonymous"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -1632,7 +1632,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <p class="scan-disclaimer" id="scanDisclaimer">Esta es una demo visual: los datos que verás son de ejemplo, no un reconocimiento real todavía.</p>
               <button class="btn btn-primary" onclick="startScannerCamera()">Activar cámara</button>
               <button class="btn btn-secondary" onclick="document.getElementById('scanUploadInput').click()">Subir una foto</button>
-              <button class="btn btn-secondary" id="watchAdBtn" style="display:none;" onclick="watchAdForBonusScans()">🎬 Ver anuncio para +5 escaneos hoy</button>
+              <button class="btn btn-secondary" id="watchAdBtn" style="display:none;" onclick="watchAdForBonusScans()">Ver anuncio para 5 escaneos extras hoy</button>
               <input type="file" accept="image/*" id="scanUploadInput" style="display:none;" onchange="handleScanUpload(event)">
               <p class="scan-warning" id="scanInsecureWarning" style="display:none;">Este navegador solo permite abrir la cámara desde una web con https:// o desde localhost. Si abriste el archivo haciendo doble clic, activa la cámara no funcionará — pero puedes subir una foto sin problema.</p>
               <p class="scan-error" id="scanError" style="display:none;"></p>
@@ -4168,23 +4168,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   async function initAdMobIfNative(){
     if(!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) return;
-    if(!window.AdMob) return;
+    if(!window.Capacitor.Plugins.AdMob) return;
     try{
-      await window.AdMob.initialize();
+      await window.Capacitor.Plugins.AdMob.initialize();
       admobReady = true;
       showBannerAds();
     } catch(err){ console.error('[Knowcar AI] No se pudo iniciar AdMob:', err); }
   }
 
   async function showBannerAds(){
-    if(!admobReady || !window.AdMob) return;
+    if(!admobReady || !window.Capacitor.Plugins.AdMob) return;
     const platform = window.Capacitor.getPlatform() === 'ios' ? 'ios' : 'android';
     try{
       // Un solo banner "flotante" abajo del todo (más fiable en WebView que
       // intentar encajarlo dentro de cada hueco reservado) — ocultamos los
       // huecos de AdSense mientras tanto, para no duplicar espacio vacío.
       document.querySelectorAll('.ad-slot').forEach(el => { el.style.display = 'none'; });
-      await window.AdMob.showBanner({
+      await window.Capacitor.Plugins.AdMob.showBanner({
         adId: ADMOB_IDS[platform].banner,
         adSize: 'ADAPTIVE_BANNER',
         position: 'BOTTOM_CENTER',
@@ -4201,12 +4201,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
     if(!currentSession){ showToast('Necesitas iniciar sesión', { check:false }); return; }
-    if(!window.AdMob){ showToast('Los anuncios no están disponibles ahora mismo', { check:false }); return; }
+    if(!window.Capacitor.Plugins.AdMob){ showToast('Los anuncios no están disponibles ahora mismo', { check:false }); return; }
 
     const platform = window.Capacitor.getPlatform() === 'ios' ? 'ios' : 'android';
     try{
-      await window.AdMob.prepareRewardVideoAd({ adId: ADMOB_IDS[platform].rewarded });
-      const result = await window.AdMob.showRewardVideoAd();
+      await window.Capacitor.Plugins.AdMob.prepareRewardVideoAd({ adId: ADMOB_IDS[platform].rewarded });
+      const result = await window.Capacitor.Plugins.AdMob.showRewardVideoAd();
       // Solo si el usuario vio el anuncio de verdad hasta el final le damos
       // el bonus — y ese bonus se concede en el SERVIDOR, no aquí, para que
       // nadie pueda saltárselo manipulando el navegador.
